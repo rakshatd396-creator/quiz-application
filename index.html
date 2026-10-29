@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1eaff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .quiz-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 4px 15px #c9b8e8;
+        }
+
+        h1 {
+            color: #7041a6;
+            text-align: center;
+        }
+
+        .option {
+            display: block;
+            background: #f5f0ff;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #7041a6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        #result {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-box">
+    <h1>📝 Online Quiz</h1>
+    <p id="question"></p>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next Question</button>
+    <p id="result"></p>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "1. What does AI stand for?",
+            options: ["Automated Internet", "Artificial Intelligence", "Advanced Information", "Automatic Input"],
+            answer: 1
+        },
+        {
+            question: "2. Which language is used for web page structure?",
+            options: ["Python", "Java", "HTML", "C"],
+            answer: 2
+        },
+        {
+            question: "3. Which one is a programming language?",
+            options: ["Google", "Python", "Windows", "Chrome"],
+            answer: 1
+        },
+        {
+            question: "4. What does CSS control?",
+            options: ["Web page styling", "Database storage", "Computer hardware", "Internet speed"],
+            answer: 0
+        },
+        {
+            question: "5. Which technology adds interactivity to web pages?",
+            options: ["HTML only", "CSS only", "JavaScript", "Notepad"],
+            answer: 2
+        }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+        document.getElementById("question").textContent =
+            questions[current].question;
+
+        document.getElementById("options").innerHTML =
+            questions[current].options.map((option, index) =>
+                `<label class="option">
+                    <input type="radio" name="answer" value="${index}">
+                    ${option}
+                </label>`
+            ).join("");
+
+        document.getElementById("result").textContent = "";
+    }
+
+    function nextQuestion() {
+        const selected = document.querySelector(
+            'input[name="answer"]:checked'
+        );
+
+        if (!selected) {
+            document.getElementById("result").textContent =
+                "Please select an answer!";
+            return;
+        }
+
+        if (Number(selected.value) === questions[current].answer) {
+            score++;
+        }
+
+        current++;
+
+        if (current < questions.length) {
+            showQuestion();
+        } else {
+            document.querySelector(".quiz-box").innerHTML =
+                `<h1>Quiz Completed!</h1>
+                 <h2 style="text-align:center">Your Score: ${score}/${questions.length}</h2>
+                 <button onclick="location.reload()">Try Again</button>`;
+        }
+    }
+
+    showQuestion();
+</script>
+
+</body>
+</html>
